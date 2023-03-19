@@ -6,7 +6,7 @@ import trading.domain.TradingStatus.*
 import trading.domain.*
 import trading.events.*
 import trading.state.*
-import zio.ZIO
+import zio.{Task, ZIO}
 import zio.test.{Assertion, ZIOSpecDefault, assertTrue, assertZIO}
 
 import java.time.Instant
@@ -55,50 +55,48 @@ object TradeEngineSpec extends ZIOSpecDefault:
   val xst6 = xst5
   val xev6 = TradeEvent.CommandRejected(eid, cid, cmd6, Reason("Trading is Off"), ts)
 
+  def stateZIO(task: Task[(TradeState, (EventId, Timestamp) => TradeEvent | SwitchEvent)]) = task.map(sta => sta._1)
+  def runOutputZIO(task: Task[(TradeState, (EventId, Timestamp) => TradeEvent | SwitchEvent)]) = task.map(sta => sta._2(eid, ts))
 
   def spec =
     suite("Trade engine")(
       suite("Trade engine commands fsm") (
         test("Ask command") {
-          assertZIO(task1.map(sta => sta._1))(Assertion.equalTo(xst1))
+          assertZIO(stateZIO(task1))(Assertion.equalTo(xst1))
         },
         test("Ask command on state 1") {
-          assertZIO(task2.map(sta => sta._1))(Assertion.equalTo(xst2))
+          assertZIO(stateZIO(task2))(Assertion.equalTo(xst2))
         },
         test("Ask command on state 2") {
-          assertZIO(task3.map(sta => sta._1))(Assertion.equalTo(xst3))
+          assertZIO(stateZIO(task3))(Assertion.equalTo(xst3))
         },
         test("Ask command on state 3") {
-          assertZIO(task4.map(sta => sta._1))(Assertion.equalTo(xst4))
+          assertZIO(stateZIO(task4))(Assertion.equalTo(xst4))
         },
         test("Ask command on state 4") {
-          assertZIO(task5.map(sta => sta._1))(Assertion.equalTo(xst5))
+          assertZIO(stateZIO(task5))(Assertion.equalTo(xst5))
         },
         test ("Ask command on state 5") {
-          assertZIO(task6.map(sta => sta._1))(Assertion.equalTo(xst6))
+          assertZIO(stateZIO(task6))(Assertion.equalTo(xst6))
         },
         test("Output 1") {
-          assertZIO(task1.map(sta => sta._2(eid, ts)))(Assertion.equalTo(xev1))
+          assertZIO(runOutputZIO(task1))(Assertion.equalTo(xev1))
         },
         test("Output 2") {
-          assertZIO(task2.map(sta => sta._2(eid, ts)))(Assertion.equalTo(xev2))
+          assertZIO(runOutputZIO(task2))(Assertion.equalTo(xev2))
         },
         test("Output 3") {
-          assertZIO(task3.map(sta => sta._2(eid, ts)))(Assertion.equalTo(xev3))
+          assertZIO(runOutputZIO(task3))(Assertion.equalTo(xev3))
         },
         test("Output 4") {
-          assertZIO(task4.map(sta => sta._2(eid, ts)))(Assertion.equalTo(xev4))
+          assertZIO(runOutputZIO(task4))(Assertion.equalTo(xev4))
         },
         test("Output 5") {
-          assertZIO(task5.map(sta => sta._2(eid, ts)))(Assertion.equalTo(xev5))
+          assertZIO(runOutputZIO(task5))(Assertion.equalTo(xev5))
         },
         test("Output 6") {
-          assertZIO(task6.map(sta => sta._2(eid, ts)))(Assertion.equalTo(xev6))
-        },
-        test("Output 7") {
-          assertZIO(task1.map(sta => sta._2(eid, ts)))(Assertion.equalTo(xev1))
+          assertZIO(runOutputZIO(task6))(Assertion.equalTo(xev6))
         }
-
       )
     )
 

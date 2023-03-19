@@ -1,5 +1,6 @@
 package trading.domain
 
+import zio.json.{DeriveJsonDecoder, DeriveJsonEncoder, JsonDecoder, JsonEncoder}
 import zio.schema.*
 
 final case class Symbol(value: String)
@@ -25,6 +26,12 @@ object Symbol {
     // first arg: from String to Symbol,
     // second arg: from Symbol to String
     Schema[String].transformOrFail(fromString(_), symbol => Right(symbol.value))
+
+  given encoder: JsonEncoder[Symbol] = DeriveJsonEncoder.gen[Symbol]
+
+  given decoder: JsonDecoder[Symbol] =
+    DeriveJsonDecoder.gen[Symbol]
+
 
   // put error inside schema
 }

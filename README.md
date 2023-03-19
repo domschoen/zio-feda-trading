@@ -30,7 +30,7 @@ Here the corresponding ZIO frameworks we use here compared to the book framework
 
  
 
-# Nix
+## Nix
 
 Package management and system configuration as well as rollbacks for upgrades.
 
@@ -39,3 +39,18 @@ Uses a Functional approach i.e artifacts are based on immutability
 NixOS is a Linux distribution but we use here nix package manager standalone (outside NixOS).
 
 Here the nix documentation: https://nixos.org/manual/nix/stable/
+
+# Implementation status
+
+Send a fake command to Kafka and subscribe to receive it back (see Usage)
+
+# Usage
+
+```
+docker compose up
+```
+
+```
+sbt feed/run
+```
+

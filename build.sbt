@@ -39,6 +39,7 @@ val commonSettings = List(
     Libraries.zioSchemaCore.value,
     Libraries.zioSchemaDerivation.value,
     Libraries.zioJson.value,
+    Libraries.zioKafka.value,
 
 // test
     Libraries.zioTestCore.value,

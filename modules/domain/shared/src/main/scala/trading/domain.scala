@@ -26,6 +26,11 @@ object Quantity {
   def apply(c: Quantity): Quantity = c
 }
 
+type Source = String
+object Source {
+  def apply(c: Source): Source = c
+}
+
 type CommandId = UUID
 object CommandId {
   def apply(c: CommandId): CommandId = c

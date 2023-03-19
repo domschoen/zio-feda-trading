@@ -49,6 +49,7 @@ object Dependencies {
     val zioPrelude        = "1.0.0-RC18"
     val zioOptics         = "0.2.1"
     val zioJson           = "0.4.2"
+    val zioKafka          = "2.1.3"
   }
 
   object Libraries {
@@ -63,6 +64,7 @@ object Dependencies {
     val zioPrelude = Def.setting("dev.zio" %%% "zio-prelude" % V.zioPrelude)
     val zioOptics = Def.setting("dev.zio" %% "zio-optics" % V.zioOptics)
     val zioJson = Def.setting("dev.zio" %% "zio-json" % V.zioJson)
+    val zioKafka = Def.setting("dev.zio" %% "zio-kafka" % V.zioKafka)
 
     def zioSchema(artifact: String) = {
       Def.setting("dev.zio" %% s"zio-schema${libSuffix(artifact)}" % V.zioSchemaVersion)
